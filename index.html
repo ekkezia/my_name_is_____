@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My name is _</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="content">
+        <h1>My name is&nbsp;</h1>
+
+    </div>
+
+    <script>
+        fetch('body.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('content').innerHTML += data;
+            })
+            .catch(error => console.log('Error loading body.html:', error));
+    </script>
+</body>
+</html>
