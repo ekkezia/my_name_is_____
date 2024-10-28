@@ -3,23 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My name is _</title>
-    <!-- Link to the external CSS file -->
+    <title>my name is _ _ _ _ _</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div id="content">
-        <h1>My name is&nbsp;</h1>
+        <a class="title">my</a><a class="title">name</a><a class="title">is</a>
+        <input id="userInput" placeholder="type a looong paragraph and hit the button"></input>
+        <button class="cta" onclick="processInput()">Button</button>
 
+        <div id="output"></div>
     </div>
 
+    <!-- Load Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js"></script>
+    
     <script>
-        fetch('body.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('content').innerHTML += data;
-            })
-            .catch(error => console.log('Error loading body.html:', error));
+        let pyodideReady = false;
+
+        async function loadPythonEnv() {
+            if (!pyodideReady) {
+            window.pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/" });
+            pyodideReady = true;
+            }
+        }
+
+        async function processInput() {
+            if (!window.pyodide) {
+                await loadPythonEnv();
+            }
+
+            const text = document.getElementById('userInput').value;
+
+            const pythonCode = `
+                def gen_link(keyword):
+                    google = "https://www.google.com/search?q="
+                    return f"<a href='{google}{keyword}' target='_blank'>{keyword}</a>"
+
+                # Split text and create links
+                def process_text(text):
+                    words = text.split()
+                    return ' '.join(gen_link(word) for word in words)
+
+                # Call with user's text
+                process_text(text)
+            `;
+
+            let result;
+            try {
+                pyodide.globals.set("text", text);
+                result = await pyodide.runPythonAsync(pythonCode);
+            } catch (error) {
+                console.log("Error:", error);
+                result = "An error occurred.";
+            }
+
+            document.getElementById("output").innerHTML = result;
+        }
+
+
+        // preload the input value
+        window.onload = async function() {
+            await loadPythonEnv();
+            const userInput = document.getElementById('userInput');
+            userInput.value = "type a looong paragraph here and hit the button and then click on any button... guess what! they are &lt;a&gt; &lt;/a&gt; links that go to Google search!!! made by @ekezia during SFPC Digital Love Language Class 2024 <3 BTW here is the meaning of my name: Keziah or Kezia is a Hebrew name. Keziah was a daughter of Job in the Hebrew Bible (Job 42:14–17). The name Keziah means 'cinnamon bark'.[1] Job gave the name to his second daughter after his restoration following the trials he faced in the first part of his life. In the United Kingdom, the name Keziah is now unusual, but it was more common in Victorian times. In 1890, the births of 137 children named Kezia were registered in England; in 1990, only 40 were.[2][better source needed][3] More recently the name has become unisex despite its origin such as the musician Keziah Jones. Keziah has also found its way into modern literature in the book Keziah Dane by Sue Grafton.[4] Keziah was also used as a female first name in the United States in the nineteenth century. For example, Keziah Brevard ran a plantation in South Carolina in the 1850s and 60s;[5] Keziah Brower lived on farms near Madison, Wisconsin and Vermillion, Dakota Territory (now South Dakota) in the 1850s, 60s, and 70s.[6] H. P. Lovecraft's The Dreams in the Witch House feature a character named Keziah Mason. The modern name Keisha is derived from this name.[citation needed]. Definition taken from https://en.wikipedia.org/wiki/Keziah_(name)";
+            await processInput();
+        };
+
+        document.getElementById('userInput').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); 
+            processInput();
+        }
+    });
+
     </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ a {
   margin-bottom: 0.5rem;
   display: inline-flex;
   padding: 1rem;
+  max-height: 2.5rem;
   background: rgb(246, 246, 246);
   border: 1px solid black;
   font-size: 2rem;
@@ -15,8 +16,73 @@ a {
 
 body {
   background: greenyellow;
+  font-family: "Times New Roman", Times, serif;
 }
 
 h1 {
   display: inline-flex;
+  text-emphasis: "⭑";
+}
+
+button {
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  padding: 1rem;
+  background: rgb(246, 246, 246);
+  border: 1px solid black;
+  font-size: 2rem;
+  border-radius: 0.2rem;
+  font-weight: 700;
+  font-family: "Times New Roman", Times, serif;
+  color: greenyellow;
+  &:hover {
+    background: greenyellow;
+    border: 1px solid greenyellow;
+  }
+}
+
+input {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  max-height: 2.5rem;
+  padding: 1rem;
+  background: rgb(246, 246, 246);
+  border: 1px solid black;
+  font-size: 2rem;
+  border-radius: 0.2rem;
+  min-width: 34rem;
+  max-width: 60rem;
+  font-family: "Times New Roman", Times, serif;
+  &:hover {
+    background: greenyellow;
+    border: 1px solid greenyellow;
+    color: green;
+  }
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 10rem;
+  }
+}
+
+.cta {
+  background: black;
+  &:hover {
+    color: green;
+  }
+}
+
+.title {
+  background: greenyellow;
+  color: greenyellow;
+  font-weight: 700;
+  border: 2px solid black;
+  color: black;
+  &:hover {
+    border: 2px solid greenyellow;
+  }
+}
+
+#content {
+  width: 100dvw;
 }
